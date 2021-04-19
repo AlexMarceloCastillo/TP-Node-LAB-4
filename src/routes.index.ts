@@ -9,7 +9,7 @@ router.get('/',(req,res)=>res.send('Express:Backend | Mode:[API_RES]'));
 router.get('/empleados', getAllEmpleados);
 router.get('/empleado/:legajo', getEmpleado);
 router.post('/insert', crearEmpleado);//insert
-router.put('/update', actualizarEmpleado);//update
-router.delete('/delete/:id', eliminarEmpleado);//eliminar
+router.put('/update/:legajo', actualizarEmpleado);//update
+router.delete('/delete/:legajo', eliminarEmpleado);//eliminar
 
 export default router;

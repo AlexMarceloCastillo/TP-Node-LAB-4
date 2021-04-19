@@ -33,6 +33,7 @@ export const getAllEmpleados = (req: Request, res: Response) => new Promise((res
 });
 
 export const crearEmpleado = (req: Request, res: Response) => new Promise((resolve, reject) => {
+  console.log(req.body);
     const {nombre, apellido, dni, sector, fecha_ingreso, activo} = req.body;
     var values = [nombre, apellido, dni, sector, fecha_ingreso, activo];
     conexionMysql.getConnection((err, connection) => {
@@ -46,7 +47,8 @@ export const crearEmpleado = (req: Request, res: Response) => new Promise((resol
                 if (err) {
                     console.error(err);
                     res.json({
-                        message: "Error al tratar de crear empleado"
+                        message: "Error al tratar de crear empleado",
+                        err:err
                     })
                 } else {
                     res.json({
@@ -60,7 +62,9 @@ export const crearEmpleado = (req: Request, res: Response) => new Promise((resol
 
 export const actualizarEmpleado = (req:Request, res:Response) => new Promise((resolve, reject) => {
     const {legajo, nombre, apellido, dni, sector, fecha_ingreso, activo} = req.body;
-    var values = [nombre, apellido, dni, sector, fecha_ingreso, legajo];
+    console.log(req.body)
+    console.log(req.params.legajo);
+    var values = [nombre, apellido, dni, sector, fecha_ingreso, activo,legajo ];
     conexionMysql.getConnection((err, connection) => {
         if (err) {
             console.error(err);
@@ -72,18 +76,19 @@ export const actualizarEmpleado = (req:Request, res:Response) => new Promise((re
             connection.query(sql, values, (err, results) => {
                 if (err) {
                   console.error(err);
-                  res.json({message:"Error al actualizar " + err})
+                  res.json({message:"Error al actualizar " ,err:err})
                 }else{
                   res.json({message:"Articulo Actualizado con exito"})
                 }
-               
+
               });
-        }          
+        }
       });
 });
 
 export const eliminarEmpleado = (req:Request, res:Response) => new Promise((resolve, reject) => {
-    const legajoEmpleado = parseInt(req.params.legajo);
+    const legajoEmpleado = req.params.legajo;
+    console.log(legajoEmpleado)
     conexionMysql.getConnection((err, connection) => {
           if (err) {
             console.error(err);
@@ -93,11 +98,11 @@ export const eliminarEmpleado = (req:Request, res:Response) => new Promise((reso
           connection.query('DELETE FROM empleados WHERE legajo = ?', [legajoEmpleado],(err, results) => {
           if (err) {
             console.error(err);
-            res.json({message:"Error al tratar de Eliminar Empleado"})
+            res.json({message:"Error al tratar de Eliminar Empleado",err:err})
           }else{
             res.json({message:"Empleado Eliminado con exito"})
           }
-          
+
         });
       });
 });

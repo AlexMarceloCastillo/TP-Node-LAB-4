@@ -2,9 +2,13 @@ import express from "express";
 
 import router from "./routes.index";
 
+import cors from 'cors';
+
 const server = express();
 
 server.use(express.json());
+
+server.use(cors())
 
 server.use(express.urlencoded({extended:false}));
 
